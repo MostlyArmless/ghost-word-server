@@ -2,3 +2,7 @@
 **/node_modules/
 # Ignore the outputs of tsc
 /build/
+
+#Ignore the user's custom blacklist and whitelist files
+/resources/blacklist.txt
+/resources/whitelist.txt
