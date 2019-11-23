@@ -62,16 +62,16 @@ app.get( '/possiblewords/:wordPart', ( req, res ) =>
     res.json( wordLookerUpper.getPossibleWords( req.params.wordPart ) );
 } );
 
-app.post( '/blacklist/:word', ( req, res ) =>
+app.get( '/blacklist/:word', ( req, res ) =>
 {
-    console.log( `/blacklistword/${req.params.word}` );
+    console.log( `client trying to blacklist word "${req.params.word}"` );
     wordLookerUpper.blacklistWord( req.params.word );
     res.status( 200 );
 } );
 
-app.post( '/whitelist/:word', ( req, res ) =>
+app.get( '/whitelist/:word', ( req, res ) =>
 {
-    console.log( `/whitelistword/${req.params.word}` );
+    console.log( `client trying to whitelist word "${req.params.word}"` );
     wordLookerUpper.whitelistWord( req.params.word );
     res.status( 200 );
 } );
