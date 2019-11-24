@@ -77,8 +77,7 @@ app.get( '/whitelist/:word', ( req, res ) =>
 } );
 
 // Turn on the server
-// let portToUse = process.env.PORT || 3000; // env var used by Heroku, ifndef then use port 3000
-let portToUse = 3001;
+let portToUse = process.env.PORT || 3001; // Use Heroku's port if in production
 app.listen( portToUse, () =>
 {
     console.log( `Server is running on port ${portToUse}` );
