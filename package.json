@@ -7,6 +7,8 @@
     "ghost-word-server": "./build/main.js"
   },
   "scripts": {
+    "postinstall": "npm run build-ts",
+    "build-ts": "tsc",
     "start": "node ./build/main.js",
     "test": "mocha"
   },
