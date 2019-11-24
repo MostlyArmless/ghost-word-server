@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fse from 'fs-extra';
 
 export interface IWordLookerUpperInitOptions
 {
@@ -18,12 +18,13 @@ export class WordLookerUpper
 
     constructor( initOptions: IWordLookerUpperInitOptions )
     {
-        this.alphabeticallySortedWordList = fs.readFileSync( initOptions.alphabeticalDictionaryFile ).toString().split( '\n' );
-        this.freqSortedWordList = fs.readFileSync( initOptions.wordFrequencyDictionaryFile ).toString().split( '\r\n' );
+        this.createUserCustomizationFilesIfMissing( initOptions );
+        this.alphabeticallySortedWordList = fse.readFileSync( initOptions.alphabeticalDictionaryFile ).toString().split( '\n' );
+        this.freqSortedWordList = fse.readFileSync( initOptions.wordFrequencyDictionaryFile ).toString().split( '\r\n' );
         this.firstLetterIndices = this.findFirstLetterIndices( this.alphabeticallySortedWordList );
         this.wordSet = new Set( this.freqSortedWordList );
-        this.blacklist = new Set( fs.readFileSync( initOptions.userBlacklistDictionaryFile ).toString().split( '/r/n' ) );
-        this.whitelist = new Set( fs.readFileSync( initOptions.userWhitelistDictionaryFile ).toString().split( '/r/n' ) );
+        this.blacklist = new Set( fse.readFileSync( initOptions.userBlacklistDictionaryFile ).toString().split( '/r/n' ) );
+        this.whitelist = new Set( fse.readFileSync( initOptions.userWhitelistDictionaryFile ).toString().split( '/r/n' ) );
     }
 
     private indexToLetter( i: number ): string
@@ -145,5 +146,19 @@ export class WordLookerUpper
         }
 
         return wordsStartingWithWordPart;
+    }
+
+    private createUserCustomizationFilesIfMissing( initOptions: IWordLookerUpperInitOptions )
+    {
+        this.createFileIfNotExist( initOptions.userBlacklistDictionaryFile );
+        this.createFileIfNotExist( initOptions.userWhitelistDictionaryFile );
+    }
+
+    private createFileIfNotExist( fileName: string )
+    {
+        if ( !fse.existsSync( fileName ) )
+        {
+            fse.createFileSync( fileName );
+        }
     }
 }
