@@ -7,8 +7,8 @@
     "ghost-word-server": "./build/main.js"
   },
   "scripts": {
-    "start": "nodemon ./build/main.js",
-    "test": "mocha --watch"
+    "start": "node ./build/main.js",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
