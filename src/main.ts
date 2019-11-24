@@ -76,6 +76,20 @@ app.get( '/whitelist/:word', ( req, res ) =>
     res.status( 200 );
 } );
 
+app.get( '/clearblacklist', ( req, res ) =>
+{
+    console.log( `Clearing blacklist.` );
+    wordLookerUpper.clearBlacklist();
+    res.status( 200 );
+} );
+
+app.get( '/clearwhitelist', ( req, res ) =>
+{
+    console.log( `Clearing whitelist.` );
+    wordLookerUpper.clearWhitelist();
+    res.status( 200 );
+} );
+
 // Turn on the server
 let portToUse = process.env.PORT || 3001; // Use Heroku's port if in production
 app.listen( portToUse, () =>

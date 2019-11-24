@@ -15,10 +15,14 @@ export class WordLookerUpper
     wordSet: Set<string>;
     blacklist: Set<string>;
     whitelist: Set<string>;
+    blacklistFilename: string;
+    whitelistFilename: string;
 
     constructor( initOptions: IWordLookerUpperInitOptions )
     {
-        this.createUserCustomizationFilesIfMissing( initOptions );
+        this.blacklistFilename = initOptions.userBlacklistDictionaryFile;
+        this.whitelistFilename = initOptions.userWhitelistDictionaryFile;
+        this.createUserCustomizationFilesIfMissing();
         this.alphabeticallySortedWordList = fse.readFileSync( initOptions.alphabeticalDictionaryFile ).toString().split( '\n' );
         this.freqSortedWordList = fse.readFileSync( initOptions.wordFrequencyDictionaryFile ).toString().split( '\r\n' );
         this.firstLetterIndices = this.findFirstLetterIndices( this.alphabeticallySortedWordList );
@@ -89,6 +93,7 @@ export class WordLookerUpper
             this.whitelist.delete( word );
         else
             this.blacklist.add( word )
+        this.saveUserCustomizationsToFile();
     }
 
     whitelistWord( word: string )
@@ -110,6 +115,7 @@ export class WordLookerUpper
             }
             this.whitelist.add( word );
         }
+        this.saveUserCustomizationsToFile();
     }
 
     isWord( testWord: string ): boolean
@@ -148,10 +154,10 @@ export class WordLookerUpper
         return wordsStartingWithWordPart;
     }
 
-    private createUserCustomizationFilesIfMissing( initOptions: IWordLookerUpperInitOptions )
+    private createUserCustomizationFilesIfMissing()
     {
-        this.createFileIfNotExist( initOptions.userBlacklistDictionaryFile );
-        this.createFileIfNotExist( initOptions.userWhitelistDictionaryFile );
+        this.createFileIfNotExist( this.blacklistFilename );
+        this.createFileIfNotExist( this.whitelistFilename );
     }
 
     private createFileIfNotExist( fileName: string )
@@ -160,5 +166,35 @@ export class WordLookerUpper
         {
             fse.createFileSync( fileName );
         }
+    }
+
+    clearBlacklist()
+    {
+        this.blacklist.clear();
+        fse.unlinkSync( this.blacklistFilename );
+        this.createUserCustomizationFilesIfMissing();
+    }
+
+    clearWhitelist()
+    {
+        this.whitelist.clear();
+        fse.unlinkSync( this.whitelistFilename );
+        this.createUserCustomizationFilesIfMissing();
+    }
+
+    private saveUserCustomizationsToFile()
+    {
+        this.writeWordlistToFile( this.blacklist, this.blacklistFilename );
+        this.writeWordlistToFile( this.whitelist, this.whitelistFilename );
+    }
+
+    private writeWordlistToFile( wordlist: Set<string>, fileName: string )
+    {
+        let words = '';
+        for ( const word of this.blacklist )
+        {
+            words += word + "\n";
+        }
+        fse.writeFileSync( fileName, words.trimEnd() );
     }
 }
