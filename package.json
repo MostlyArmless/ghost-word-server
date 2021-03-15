@@ -26,16 +26,16 @@
     "fs-extra": "^8.1.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.5",
-    "@types/fs-extra": "^8.0.1",
+    "@types/chai": "^4.2.15",
+    "@types/fs-extra": "^8.1.1",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.17.6",
-    "chai": "^4.2.0",
+    "@types/node": "^10.17.55",
+    "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "chai-string": "^1.5.0",
     "mocha": "^5.2.0",
-    "nodemon": "^2.0.1",
-    "ts-node": "^8.5.2",
-    "typescript": "^3.7.2"
+    "nodemon": "^2.0.7",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.9"
   }
 }
