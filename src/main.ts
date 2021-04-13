@@ -2,9 +2,9 @@
 import * as express from 'express';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
-import { WordLookerUpper } from './wordLookerUpper';
+import { IWordLookerUpperInitOptions, WordLookerUpper } from './wordLookerUpper';
 
-const initOptions = {
+const initOptions: IWordLookerUpperInitOptions = {
     alphabeticalDictionaryFile: './resources/sorted_dictionary.txt',
     wordFrequencyDictionaryFile: './resources/20k_word_freq_dict.txt',
     userBlacklistDictionaryFile: './resources/blacklist.txt',
