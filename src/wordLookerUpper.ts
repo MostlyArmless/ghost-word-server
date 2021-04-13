@@ -191,7 +191,7 @@ export class WordLookerUpper
     private writeWordlistToFile( wordlist: Set<string>, fileName: string )
     {
         let words = '';
-        for ( const word of this.blacklist )
+        for ( const word of wordlist )
         {
             words += word + "\n";
         }
