@@ -90,23 +90,13 @@ export class WordLookerUpper
 
     whitelistWord( word: string )
     {
+        if ( this.blacklist.has( word ) )
+            this.blacklist.delete( word );
+
         if ( this.wordSet.has( word ) )
-        {
-            if ( this.blacklist.has( word ) )
-            {
-                this.blacklist.delete( word );
-                return;
-            }
             return; // Not allowed to whitelist a word that's already in the dictionary
-        }
         else
-        {
-            if ( this.blacklist.has( word ) )
-            {
-                this.blacklist.delete( word );
-            }
             this.whitelist.add( word );
-        }
     }
 
     isWord( testWord: string ): boolean
