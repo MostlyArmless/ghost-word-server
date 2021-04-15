@@ -4,8 +4,6 @@ export interface IWordLookerUpperInitOptions
 {
     alphabeticalDictionaryFile: string;
     wordFrequencyDictionaryFile: string;
-    userBlacklistDictionaryFile: string;
-    userWhitelistDictionaryFile: string;
 }
 export class WordLookerUpper
 {
@@ -15,20 +13,15 @@ export class WordLookerUpper
     wordSet: Set<string>;
     blacklist: Set<string>;
     whitelist: Set<string>;
-    blacklistFilename: string;
-    whitelistFilename: string;
 
     constructor( initOptions: IWordLookerUpperInitOptions )
     {
-        this.blacklistFilename = initOptions.userBlacklistDictionaryFile;
-        this.whitelistFilename = initOptions.userWhitelistDictionaryFile;
-        this.createUserCustomizationFilesIfMissing();
         this.alphabeticallySortedWordList = fse.readFileSync( initOptions.alphabeticalDictionaryFile ).toString().split( '\n' );
         this.freqSortedWordList = fse.readFileSync( initOptions.wordFrequencyDictionaryFile ).toString().split( '\r\n' );
         this.firstLetterIndices = this.findFirstLetterIndices( this.alphabeticallySortedWordList );
         this.wordSet = new Set( this.freqSortedWordList );
-        this.blacklist = new Set( fse.readFileSync( initOptions.userBlacklistDictionaryFile ).toString().split( '/r/n' ) );
-        this.whitelist = new Set( fse.readFileSync( initOptions.userWhitelistDictionaryFile ).toString().split( '/r/n' ) );
+        this.blacklist = new Set();
+        this.whitelist = new Set();
     }
 
     private indexToLetter( i: number ): string
@@ -93,7 +86,6 @@ export class WordLookerUpper
             this.whitelist.delete( word );
         else
             this.blacklist.add( word )
-        this.saveUserCustomizationsToFile();
     }
 
     whitelistWord( word: string )
@@ -115,7 +107,6 @@ export class WordLookerUpper
             }
             this.whitelist.add( word );
         }
-        this.saveUserCustomizationsToFile();
     }
 
     isWord( testWord: string ): boolean
@@ -154,47 +145,13 @@ export class WordLookerUpper
         return wordsStartingWithWordPart;
     }
 
-    private createUserCustomizationFilesIfMissing()
-    {
-        this.createFileIfNotExist( this.blacklistFilename );
-        this.createFileIfNotExist( this.whitelistFilename );
-    }
-
-    private createFileIfNotExist( fileName: string )
-    {
-        if ( !fse.existsSync( fileName ) )
-        {
-            fse.createFileSync( fileName );
-        }
-    }
-
     clearBlacklist()
     {
         this.blacklist.clear();
-        fse.unlinkSync( this.blacklistFilename );
-        this.createUserCustomizationFilesIfMissing();
     }
 
     clearWhitelist()
     {
         this.whitelist.clear();
-        fse.unlinkSync( this.whitelistFilename );
-        this.createUserCustomizationFilesIfMissing();
-    }
-
-    private saveUserCustomizationsToFile()
-    {
-        this.writeWordlistToFile( this.blacklist, this.blacklistFilename );
-        this.writeWordlistToFile( this.whitelist, this.whitelistFilename );
-    }
-
-    private writeWordlistToFile( wordlist: Set<string>, fileName: string )
-    {
-        let words = '';
-        for ( const word of wordlist )
-        {
-            words += word + "\n";
-        }
-        fse.writeFileSync( fileName, words.trimEnd() );
     }
 }

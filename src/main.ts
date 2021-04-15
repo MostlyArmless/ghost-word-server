@@ -7,8 +7,6 @@ import { IWordLookerUpperInitOptions, WordLookerUpper } from './wordLookerUpper'
 const initOptions: IWordLookerUpperInitOptions = {
     alphabeticalDictionaryFile: './resources/sorted_dictionary.txt',
     wordFrequencyDictionaryFile: './resources/20k_word_freq_dict.txt',
-    userBlacklistDictionaryFile: './resources/blacklist.txt',
-    userWhitelistDictionaryFile: './resources/whitelist.txt'
 }
 const wordLookerUpper = new WordLookerUpper( initOptions );
 
