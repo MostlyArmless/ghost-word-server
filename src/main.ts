@@ -54,16 +54,22 @@ app.get( '/whitelist', ( req, res ) =>
     res.json( wordLookerUpper.getWhitelist() );
 } )
 
-app.get( '/possiblewords/:wordPart', ( req, res ) =>
+app.get( '/wordsstartingwith/:wordPart', ( req, res ) =>
 {
-    console.log( `possiblewords/${req.params.wordPart}` );
-    res.json( wordLookerUpper.getPossibleWords( req.params.wordPart ) );
+    console.log( `wordsstartingwith/${req.params.wordPart}` );
+    res.json( wordLookerUpper.getAllWordsStartingWith( req.params.wordPart ) );
 } );
 
-app.get( '/countpossiblewords/:wordPart', ( req, res ) =>
+app.get( '/wordsendingwith/:wordPart', ( req, res ) =>
 {
-    console.log( `countpossiblewords/${req.params.wordPart}` );
-    res.json( wordLookerUpper.countPossibleWords( req.params.wordPart ) );
+    console.log( `wordsendingwith/${req.params.wordPart}` );
+    res.json( wordLookerUpper.getAllWordsEndingWith( req.params.wordPart ) );
+} );
+
+app.get( '/wordscontaining/:wordPart', ( req, res ) =>
+{
+    console.log( `wordscontaining/${req.params.wordPart}` );
+    res.json( wordLookerUpper.getAllWordsContaining( req.params.wordPart ) );
 } );
 
 app.get( '/blacklist/:word', ( req, res ) =>

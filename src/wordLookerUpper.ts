@@ -104,19 +104,16 @@ export class WordLookerUpper
         return ( this.wordSet.has( testWord ) || this.isWhitelisted( testWord ) ) && !this.isBlacklisted( testWord );
     }
 
-    getPossibleWords( wordPart: string ): string[]
+    getAllWordsEndingWith( wordPart: string ): string[]
     {
         let wordsStartingWithWordPart: string[] = [];
         if ( wordPart.length === 0 )
             return wordsStartingWithWordPart;
 
-        const firstLetter = wordPart[0];
-        const nextLetter = this.indexToLetter( this.letterToIndex( firstLetter ) + 1 );
-        const startOfThisAlphabetSection: number = firstLetter === 'a' ? 0 : this.firstLetterIndices[firstLetter];
-        const startOfNextAlphabetSection: number = firstLetter === 'z' ? this.alphabeticallySortedWordList.length : this.firstLetterIndices[nextLetter];
+        const { startOfThisAlphabetSection, startOfNextAlphabetSection } = this.getAlphabetSubsectionLimitIndices( wordPart );
 
         let foundOne = false;
-        console.log( `First letter ${firstLetter}, so in index range [${startOfThisAlphabetSection}, ${startOfNextAlphabetSection}]` )
+        console.log( `First letter is ${wordPart[0]}, so in index range [${startOfThisAlphabetSection}, ${startOfNextAlphabetSection}]` )
         for ( let i = startOfThisAlphabetSection; i < startOfNextAlphabetSection; i++ )
         {
             const word = this.alphabeticallySortedWordList[i];
@@ -135,9 +132,52 @@ export class WordLookerUpper
         return wordsStartingWithWordPart;
     }
 
+    getAllWordsStartingWith( wordPart: string ): string[]
+    {
+        let wordsEndingWithWordPart: string[] = [];
+        if ( wordPart.length === 0 )
+            return wordsEndingWithWordPart;
+
+        console.log( `Searching entire dictionary for words that end with "${wordPart}"` )
+        for ( let i = 0; i < this.alphabeticallySortedWordList.length; i++ )
+        {
+            const word = this.alphabeticallySortedWordList[i];
+            if ( word.endsWith( wordPart ) )
+                wordsEndingWithWordPart.push( word );
+        }
+
+        return wordsEndingWithWordPart;
+    }
+
+    getAllWordsContaining( wordPart: string ): string[]
+    {
+        let wordsContainingWordPart: string[] = [];
+        if ( wordPart.length === 0 )
+            return wordsContainingWordPart;
+
+        console.log( `Searching entire dictionary for words that contain "${wordPart}"` )
+        for ( let i = 0; i < this.alphabeticallySortedWordList.length; i++ )
+        {
+            const word = this.alphabeticallySortedWordList[i];
+            if ( word.length !== wordPart.length && word.includes( wordPart ) )
+                wordsContainingWordPart.push( word );
+        }
+
+        return wordsContainingWordPart;
+    }
+
+    private getAlphabetSubsectionLimitIndices( wordPart: string )
+    {
+        const firstLetter = wordPart[0];
+        const nextLetter = this.indexToLetter( this.letterToIndex( firstLetter ) + 1 );
+        const startOfThisAlphabetSection: number = firstLetter === 'a' ? 0 : this.firstLetterIndices[firstLetter];
+        const startOfNextAlphabetSection: number = firstLetter === 'z' ? this.alphabeticallySortedWordList.length : this.firstLetterIndices[nextLetter];
+        return { startOfThisAlphabetSection, startOfNextAlphabetSection };
+    }
+
     countPossibleWords( wordPart: string ): number
     {
-        return this.getPossibleWords( wordPart ).length;
+        return this.getAllWordsEndingWith( wordPart ).length;
     }
 
     clearBlacklist()
