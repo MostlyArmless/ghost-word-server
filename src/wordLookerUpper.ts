@@ -135,6 +135,11 @@ export class WordLookerUpper
         return wordsStartingWithWordPart;
     }
 
+    countPossibleWords( wordPart: string ): number
+    {
+        return this.getPossibleWords( wordPart ).length;
+    }
+
     clearBlacklist()
     {
         this.blacklist.clear();

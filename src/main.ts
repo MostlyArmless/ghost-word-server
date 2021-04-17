@@ -60,6 +60,12 @@ app.get( '/possiblewords/:wordPart', ( req, res ) =>
     res.json( wordLookerUpper.getPossibleWords( req.params.wordPart ) );
 } );
 
+app.get( '/countpossiblewords/:wordPart', ( req, res ) =>
+{
+    console.log( `countpossiblewords/${req.params.wordPart}` );
+    res.json( wordLookerUpper.countPossibleWords( req.params.wordPart ) );
+} );
+
 app.get( '/blacklist/:word', ( req, res ) =>
 {
     console.log( `client trying to blacklist word "${req.params.word}"` );
