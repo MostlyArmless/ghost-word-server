@@ -21,10 +21,11 @@ app.get( '/', ( req, res ) =>
 
 app.get( '/isword/:testWord', ( req, res ) =>
 {
-    console.log( `isword/${req.params.testWord}` );
     const testWord = req.params.testWord;
+    const result = wordLookerUpper.isWord( testWord );
+    console.log( `isword/${req.params.testWord} = ${result}` );
     res.json( {
-        isWord: wordLookerUpper.isWord( testWord )
+        isWord: result
     } );
 } );
 
