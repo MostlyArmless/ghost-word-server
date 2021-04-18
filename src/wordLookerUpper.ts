@@ -1,5 +1,7 @@
 import * as fse from 'fs-extra';
 
+const numWordsToPreview = 5;
+
 export interface IWordLookerUpperInitOptions
 {
     alphabeticalDictionaryFile: string;
@@ -113,7 +115,6 @@ export class WordLookerUpper
         const { startOfThisAlphabetSection, startOfNextAlphabetSection } = this.getAlphabetSubsectionLimitIndices( wordPart );
 
         let foundOne = false;
-        console.log( `First letter is ${wordPart[0]}, so in index range [${startOfThisAlphabetSection}, ${startOfNextAlphabetSection}]` )
         for ( let i = startOfThisAlphabetSection; i < startOfNextAlphabetSection; i++ )
         {
             const word = this.alphabeticallySortedWordList[i];
@@ -129,7 +130,8 @@ export class WordLookerUpper
             }
         }
 
-        console.log( `Found ${wordsStartingWithWordPart.length} words starting with "${wordPart}"` );
+        const wordPreview = wordsStartingWithWordPart.length === 0 ? '' : `${wordsStartingWithWordPart.slice( 0, numWordsToPreview ).toString()}, and ${wordsStartingWithWordPart.length - numWordsToPreview} other words`
+        console.log( `Found ${wordsStartingWithWordPart.length} words starting with "${wordPart}"${wordPreview}` );
         return wordsStartingWithWordPart;
     }
 
@@ -147,7 +149,8 @@ export class WordLookerUpper
                 wordsEndingWithWordPart.push( word );
         }
 
-        console.log( `Found ${wordsEndingWithWordPart.length} words ending with "${wordPart}"` );
+        const wordPreview = wordsEndingWithWordPart.length === 0 ? '' : `${wordsEndingWithWordPart.slice( 0, numWordsToPreview ).toString()}, and ${wordsEndingWithWordPart.length - numWordsToPreview} other words`
+        console.log( `Found ${wordsEndingWithWordPart.length} words ending with "${wordPart}"${wordPreview}` );
         return wordsEndingWithWordPart;
     }
 
@@ -165,7 +168,8 @@ export class WordLookerUpper
                 wordsContainingWordPart.push( word );
         }
 
-        console.log( `Found ${wordsContainingWordPart.length} words containing "${wordPart}"` );
+        const wordPreview = wordsContainingWordPart.length === 0 ? '' : `${wordsContainingWordPart.slice( 0, numWordsToPreview ).toString()}, and {wordsContainingWordPart.length - numWordsToPreview} other words`
+        console.log( `Found ${wordsContainingWordPart.length} words containing "${wordPart}"${wordPreview}` );
         return wordsContainingWordPart;
     }
 
