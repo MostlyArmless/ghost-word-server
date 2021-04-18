@@ -72,6 +72,24 @@ app.get( '/wordscontaining/:wordPart', ( req, res ) =>
     res.json( wordLookerUpper.getAllWordsContaining( req.params.wordPart ) );
 } );
 
+app.get( '/countwordsendingwith/:wordPart', ( req, res ) =>
+{
+    console.log( `countwordsendingwith/${req.params.wordPart}` );
+    res.json( wordLookerUpper.countWordsEndingWith( req.params.wordPart ) );
+} );
+
+app.get( '/countwordsstartingwith/:wordPart', ( req, res ) =>
+{
+    console.log( `countwordsendingwith/${req.params.wordPart}` );
+    res.json( wordLookerUpper.countWordsStartingWith( req.params.wordPart ) );
+} );
+
+app.get( '/countwordscontaining:wordPart', ( req, res ) =>
+{
+    console.log( `countwordsendingwith/${req.params.wordPart}` );
+    res.json( wordLookerUpper.countWordsContaining( req.params.wordPart ) );
+} );
+
 app.get( '/blacklist/:word', ( req, res ) =>
 {
     console.log( `client trying to blacklist word "${req.params.word}"` );

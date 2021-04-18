@@ -104,7 +104,7 @@ export class WordLookerUpper
         return ( this.wordSet.has( testWord ) || this.isWhitelisted( testWord ) ) && !this.isBlacklisted( testWord );
     }
 
-    getAllWordsEndingWith( wordPart: string ): string[]
+    getAllWordsStartingWith( wordPart: string ): string[]
     {
         let wordsStartingWithWordPart: string[] = [];
         if ( wordPart.length === 0 )
@@ -129,10 +129,11 @@ export class WordLookerUpper
             }
         }
 
+        console.log( `Found ${wordsStartingWithWordPart.length} words starting with "${wordPart}"` );
         return wordsStartingWithWordPart;
     }
 
-    getAllWordsStartingWith( wordPart: string ): string[]
+    getAllWordsEndingWith( wordPart: string ): string[]
     {
         let wordsEndingWithWordPart: string[] = [];
         if ( wordPart.length === 0 )
@@ -146,6 +147,7 @@ export class WordLookerUpper
                 wordsEndingWithWordPart.push( word );
         }
 
+        console.log( `Found ${wordsEndingWithWordPart.length} words ending with "${wordPart}"` );
         return wordsEndingWithWordPart;
     }
 
@@ -163,6 +165,7 @@ export class WordLookerUpper
                 wordsContainingWordPart.push( word );
         }
 
+        console.log( `Found ${wordsContainingWordPart.length} words containing "${wordPart}"` );
         return wordsContainingWordPart;
     }
 
@@ -175,9 +178,19 @@ export class WordLookerUpper
         return { startOfThisAlphabetSection, startOfNextAlphabetSection };
     }
 
-    countPossibleWords( wordPart: string ): number
+    countWordsEndingWith( wordPart: string ): number
     {
         return this.getAllWordsEndingWith( wordPart ).length;
+    }
+
+    countWordsStartingWith( wordPart: string ): number
+    {
+        return this.getAllWordsStartingWith( wordPart ).length;
+    }
+
+    countWordsContaining( wordPart: string ): number
+    {
+        return this.getAllWordsContaining( wordPart ).length;
     }
 
     clearBlacklist()
