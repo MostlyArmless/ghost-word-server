@@ -9,7 +9,6 @@ export interface IWordLookerUpperInitOptions
 }
 export class WordLookerUpper
 {
-    freqSortedWordList: string[];
     alphabeticallySortedWordList: string[];
     firstLetterIndices: Map<string, number>;
     wordSet: Set<string>;
@@ -19,9 +18,8 @@ export class WordLookerUpper
     constructor( initOptions: IWordLookerUpperInitOptions )
     {
         this.alphabeticallySortedWordList = fse.readFileSync( initOptions.alphabeticalDictionaryFile ).toString().split( '\n' );
-        this.freqSortedWordList = fse.readFileSync( initOptions.wordFrequencyDictionaryFile ).toString().split( '\r\n' );
         this.firstLetterIndices = this.findFirstLetterIndices( this.alphabeticallySortedWordList );
-        this.wordSet = new Set( this.freqSortedWordList );
+        this.wordSet = new Set( this.alphabeticallySortedWordList );
         this.blacklist = new Set();
         this.whitelist = new Set();
     }
@@ -130,7 +128,7 @@ export class WordLookerUpper
             }
         }
 
-        const wordPreview = wordsStartingWithWordPart.length === 0 ? '' : `${wordsStartingWithWordPart.slice( 0, numWordsToPreview ).toString()}, and ${wordsStartingWithWordPart.length - numWordsToPreview} other words`
+        const wordPreview = wordsStartingWithWordPart.length === 0 ? '' : `: ${wordsStartingWithWordPart.slice( 0, numWordsToPreview ).toString()}, and ${wordsStartingWithWordPart.length - numWordsToPreview} other words`
         console.log( `Found ${wordsStartingWithWordPart.length} words starting with "${wordPart}"${wordPreview}` );
         return wordsStartingWithWordPart;
     }
@@ -149,7 +147,7 @@ export class WordLookerUpper
                 wordsEndingWithWordPart.push( word );
         }
 
-        const wordPreview = wordsEndingWithWordPart.length === 0 ? '' : `${wordsEndingWithWordPart.slice( 0, numWordsToPreview ).toString()}, and ${wordsEndingWithWordPart.length - numWordsToPreview} other words`
+        const wordPreview = wordsEndingWithWordPart.length === 0 ? '' : `: ${wordsEndingWithWordPart.slice( 0, numWordsToPreview ).toString()}, and ${wordsEndingWithWordPart.length - numWordsToPreview} other words`
         console.log( `Found ${wordsEndingWithWordPart.length} words ending with "${wordPart}"${wordPreview}` );
         return wordsEndingWithWordPart;
     }
@@ -168,7 +166,7 @@ export class WordLookerUpper
                 wordsContainingWordPart.push( word );
         }
 
-        const wordPreview = wordsContainingWordPart.length === 0 ? '' : `${wordsContainingWordPart.slice( 0, numWordsToPreview ).toString()}, and {wordsContainingWordPart.length - numWordsToPreview} other words`
+        const wordPreview = wordsContainingWordPart.length === 0 ? '' : `: ${wordsContainingWordPart.slice( 0, numWordsToPreview ).toString()}, and {wordsContainingWordPart.length - numWordsToPreview} other words`
         console.log( `Found ${wordsContainingWordPart.length} words containing "${wordPart}"${wordPreview}` );
         return wordsContainingWordPart;
     }
